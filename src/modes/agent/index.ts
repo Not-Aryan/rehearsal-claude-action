@@ -16,8 +16,9 @@ export const agentMode: Mode = {
   description: "Automation mode for workflow_dispatch and schedule events",
 
   shouldTrigger(context) {
-    // Only trigger for automation events
-    return isAutomationContext(context);
+    // Trigger for automation events OR when direct_prompt is provided
+    const hasDirectPrompt = !!process.env.DIRECT_PROMPT;
+    return isAutomationContext(context) || hasDirectPrompt;
   },
 
   prepareContext(context) {

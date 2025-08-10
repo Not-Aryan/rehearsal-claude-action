@@ -165,11 +165,11 @@ export async function prepareMcpConfig(
       };
     }
 
-    // Add Playwright MCP for QA testing if mode is QA or if playwright tools are allowed
+    // Add Playwright MCP for QA testing if playwright tools are allowed
     const hasPlaywrightTools = allowedToolsList.some((tool) =>
       tool.toLowerCase().includes("playwright")
     );
-    if (hasPlaywrightTools || context.inputs.mode === "qa") {
+    if (hasPlaywrightTools) {
       baseMcpConfig.mcpServers.playwright = {
         command: "npx",
         args: ["-y", "@playwright/mcp@latest"],

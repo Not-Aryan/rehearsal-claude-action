@@ -171,8 +171,8 @@ runs:
         TRIGGER_PHRASE: ${{ inputs.trigger_phrase }}
         ASSIGNEE_TRIGGER: ${{ inputs.assignee_trigger }}
         LABEL_TRIGGER: ${{ inputs.label_trigger }}
-        APP_ID: ${{ inputs.rehearsal_app_id }}
-        APP_PRIVATE_KEY: ${{ inputs.rehearsal_app_private_key }}
+        REHEARSAL_APP_ID: ${{ inputs.rehearsal_app_id }}
+        REHEARSAL_APP_PRIVATE_KEY: ${{ inputs.rehearsal_app_private_key }}
         BASE_BRANCH: ${{ inputs.base_branch }}
         BRANCH_PREFIX: ${{ inputs.branch_prefix }}
         ALLOWED_TOOLS: ${{ inputs.allowed_tools }}

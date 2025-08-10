@@ -25,9 +25,9 @@ export function createCommentBody(
   jobRunLink: string,
   branchLink: string = "",
 ): string {
-  return `Claude Code is working… ${SPINNER_HTML}
+  return `🎭 Rehearsal AI is analyzing your PR… ${SPINNER_HTML}
 
-I'll analyze this and get back to you.
+Running comprehensive QA tests and analysis.
 
 ${jobRunLink}${branchLink}`;
 }

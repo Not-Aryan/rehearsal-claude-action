@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 /**
- * Create the initial tracking comment when Claude Code starts working
+ * Create the initial tracking comment when Rehearsal AI starts working
  * This comment shows the working status and includes a link to the job run
  */
 
@@ -14,7 +14,7 @@ import {
 } from "../../context";
 import type { Octokit } from "@octokit/rest";
 
-const CLAUDE_APP_BOT_ID = 209825114;
+const REHEARSAL_APP_BOT_ID = 225655587; // Rehearsal AI bot user ID
 
 export async function createInitialComment(
   octokit: Octokit,
@@ -39,10 +39,11 @@ export async function createInitialComment(
         issue_number: context.entityNumber,
       });
       const existingComment = comments.data.find((comment) => {
-        const idMatch = comment.user?.id === CLAUDE_APP_BOT_ID;
+        const idMatch = comment.user?.id === REHEARSAL_APP_BOT_ID;
         const botNameMatch =
           comment.user?.type === "Bot" &&
-          comment.user?.login.toLowerCase().includes("claude");
+          (comment.user?.login.toLowerCase().includes("rehearsal") ||
+           comment.user?.login.toLowerCase().includes("claude")); // Support both during transition
         const bodyMatch = comment.body === initialBody;
 
         return idMatch || botNameMatch || bodyMatch;
@@ -84,7 +85,7 @@ export async function createInitialComment(
 
     // Output the comment ID for downstream steps using GITHUB_OUTPUT
     const githubOutput = process.env.GITHUB_OUTPUT!;
-    appendFileSync(githubOutput, `claude_comment_id=${response.data.id}\n`);
+    appendFileSync(githubOutput, `rehearsal_comment_id=${response.data.id}\n`);
     console.log(`✅ Created initial comment with ID: ${response.data.id}`);
     return response.data;
   } catch (error) {
@@ -100,7 +101,7 @@ export async function createInitialComment(
       });
 
       const githubOutput = process.env.GITHUB_OUTPUT!;
-      appendFileSync(githubOutput, `claude_comment_id=${response.data.id}\n`);
+      appendFileSync(githubOutput, `rehearsal_comment_id=${response.data.id}\n`);
       console.log(`✅ Created fallback comment with ID: ${response.data.id}`);
       return response.data;
     } catch (fallbackError) {

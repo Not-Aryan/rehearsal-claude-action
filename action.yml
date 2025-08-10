@@ -1,32 +1,44 @@
-name: "Claude Code Action Official"
-description: "General-purpose Claude agent for GitHub PRs and issues. Can answer questions and implement code changes."
+name: "Rehearsal QA Bot"
+description: "AI-powered QA testing for GitHub PRs using natural language browser automation."
 branding:
-  icon: "at-sign"
-  color: "orange"
+  icon: "check-circle"
+  color: "green"
 
 inputs:
   trigger_phrase:
     description: "The trigger phrase to look for in comments or issue body"
     required: false
-    default: "@claude"
+    default: "@rehearsal"
   assignee_trigger:
     description: "The assignee username that triggers the action (e.g. @claude)"
     required: false
   label_trigger:
-    description: "The label that triggers the action (e.g. claude)"
+    description: "The label that triggers the action (e.g. qa-test)"
     required: false
-    default: "claude"
+    default: "qa-test"
   base_branch:
     description: "The branch to use as the base/source when creating new branches (defaults to repository default branch)"
     required: false
   branch_prefix:
-    description: "The prefix to use for Claude branches (defaults to 'claude/', use 'claude-' for dash format)"
+    description: "The prefix to use for Rehearsal branches (defaults to 'rehearsal/', use 'rehearsal-' for dash format)"
     required: false
-    default: "claude/"
+    default: "rehearsal/"
   allowed_bots:
     description: "Comma-separated list of allowed bot usernames, or '*' to allow all bots. Empty string (default) allows no bots."
     required: false
     default: ""
+  
+  # Rehearsal Platform Integration
+  rehearsal_api_key:
+    description: "API key for Rehearsal platform to save test results"
+    required: false
+  rehearsal_app_id:
+    description: "GitHub App ID for Rehearsal AI bot"
+    required: false
+    default: "1757535"
+  rehearsal_app_private_key:
+    description: "GitHub App private key for Rehearsal AI bot"
+    required: false
 
   # Mode configuration
   mode:

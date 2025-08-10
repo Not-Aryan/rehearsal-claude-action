@@ -165,6 +165,21 @@ export async function prepareMcpConfig(
       };
     }
 
+    // Add Playwright MCP for QA testing if mode is QA or if playwright tools are allowed
+    const hasPlaywrightTools = allowedToolsList.some((tool) =>
+      tool.toLowerCase().includes("playwright")
+    );
+    if (hasPlaywrightTools || context.inputs.mode === "qa") {
+      baseMcpConfig.mcpServers.playwright = {
+        command: "npx",
+        args: ["-y", "@playwright/mcp@latest"],
+        env: {
+          PLAYWRIGHT_HEADLESS: "true",
+          PLAYWRIGHT_BROWSERS_PATH: "/tmp/pw-browsers"
+        }
+      };
+    }
+
     if (hasGitHubMcpTools) {
       baseMcpConfig.mcpServers.github = {
         command: "docker",

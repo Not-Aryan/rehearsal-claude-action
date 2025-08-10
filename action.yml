@@ -149,8 +149,8 @@ runs:
 
     - name: Generate Rehearsal App Token
       id: rehearsal-token
-      if: inputs.rehearsal_app_id != '' && inputs.rehearsal_app_private_key != ''
       uses: actions/create-github-app-token@v1
+      if: inputs.rehearsal_app_private_key != ''
       with:
         app-id: ${{ inputs.rehearsal_app_id }}
         private-key: ${{ inputs.rehearsal_app_private_key }}

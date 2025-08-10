@@ -147,6 +147,14 @@ runs:
       with:
         bun-version: 1.2.11
 
+    - name: Generate Rehearsal App Token
+      id: rehearsal-token
+      if: inputs.rehearsal_app_id != '' && inputs.rehearsal_app_private_key != ''
+      uses: actions/create-github-app-token@v1
+      with:
+        app-id: ${{ inputs.rehearsal_app_id }}
+        private-key: ${{ inputs.rehearsal_app_private_key }}
+
     - name: Install Dependencies
       shell: bash
       run: |
@@ -173,7 +181,7 @@ runs:
         DIRECT_PROMPT: ${{ inputs.direct_prompt }}
         OVERRIDE_PROMPT: ${{ inputs.override_prompt }}
         MCP_CONFIG: ${{ inputs.mcp_config }}
-        OVERRIDE_GITHUB_TOKEN: ${{ inputs.github_token }}
+        OVERRIDE_GITHUB_TOKEN: ${{ steps.rehearsal-token.outputs.token || inputs.github_token }}
         ALLOWED_BOTS: ${{ inputs.allowed_bots }}
         GITHUB_RUN_ID: ${{ github.run_id }}
         USE_STICKY_COMMENT: ${{ inputs.use_sticky_comment }}

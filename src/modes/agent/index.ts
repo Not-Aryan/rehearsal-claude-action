@@ -38,7 +38,9 @@ export const agentMode: Mode = {
   },
 
   shouldCreateTrackingComment() {
-    return false;
+    // Create tracking comment for PRs, skip for automation events
+    const eventName = process.env.GITHUB_EVENT_NAME;
+    return eventName === 'pull_request' || eventName === 'pull_request_target';
   },
 
   async prepare({ context }: ModeOptions): Promise<ModeResult> {

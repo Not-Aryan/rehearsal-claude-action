@@ -1,7 +1,8 @@
 import * as core from "@actions/core";
 import { mkdir, writeFile } from "fs/promises";
 import type { Mode, ModeOptions, ModeResult } from "../types";
-import { isAutomationContext } from "../../github/context";
+import { isAutomationContext, isEntityContext } from "../../github/context";
+import { createInitialComment } from "../../github/operations/comments/create-initial";
 import type { PreparedContext } from "../../create-prompt/types";
 
 /**
@@ -43,8 +44,16 @@ export const agentMode: Mode = {
     return eventName === 'pull_request' || eventName === 'pull_request_target';
   },
 
-  async prepare({ context }: ModeOptions): Promise<ModeResult> {
-    // Agent mode handles automation events (workflow_dispatch, schedule) only
+  async prepare({ context, octokit }: ModeOptions): Promise<ModeResult> {
+    // Agent mode handles automation events (workflow_dispatch, schedule) and PRs with direct_prompt
+
+    // Create initial tracking comment for PRs
+    let commentId: number | undefined;
+    if (isEntityContext(context) && this.shouldCreateTrackingComment()) {
+      const commentData = await createInitialComment(octokit.rest, context);
+      commentId = commentData.id;
+      console.log(`Created initial tracking comment with ID: ${commentId}`);
+    }
 
     // TODO: handle by createPrompt (similar to tag and review modes)
     // Create prompt directory
@@ -108,7 +117,7 @@ export const agentMode: Mode = {
     core.setOutput("mcp_config", JSON.stringify(mcpConfig));
 
     return {
-      commentId: undefined,
+      commentId: commentId,
       branchInfo: {
         baseBranch: "",
         currentBranch: "",
